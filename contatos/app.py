@@ -27,49 +27,44 @@ for linha in pagina.iter_rows(min_row=2):
     nome = linha[0].value
     telefone = linha[1].value
     vencimento = linha[2].value
+    produto = linha[3].value
 
     # Mostrando os valores pegos
     print(nome)
     print(telefone)
     print(vencimento)
+    print(produto)
 
     #Criacao da mensagem formatada para inserir na URL
-    mensagem = f'Olá {nome} seus produtos já estão disponíveis para retirada ate o dia {vencimento.strftime("%d/%m/%Y")}\nMas lembrando ao senhores que após o prazo será revendido seu produto'
+    mensagem = f'Faaala dog {nome} seus produtos "{produto}" já estão disponíveis para retirada ate o dia {vencimento.strftime("%d/%m/%Y")}!!\nMas lembrando ao senhores que após o prazo de 30 dias será revendido seu produto'
 
 
 # 2.Criar links personalizados do whatszapp e enviar mensagens para cada cliente
     
+    #try:
     # Descobrir se algum deu erro
-    try: 
-        # geração da url para nmr especifico
-        # https://web.whatsapp.com/send?phone={}&text={}
-        link_msg_whats = f'https://web.whatsapp.com/send?phone={telefone}&text={quote(mensagem)}'
+    # geração da url para nmr especifico
+    # https://web.whatsapp.com/send?phone={}&text={}
+    link_msg_whats = f'https://web.whatsapp.com/send?phone={telefone}&text={quote(mensagem)}'
 
-        # para abrir no navegador usando minha url
-        webbrowser.open(link_msg_whats)
+    # para abrir no navegador usando minha url
+    webbrowser.open(link_msg_whats)
 
-        # Pausar para poder a escrita entrar e aparecer o boatao
-        sleep(10)
+    while True:
+        try:
+            # salvanvo na variavel a localização do botao de enviar
+            seta = pyautogui.locateOnScreen('seta.png')
+            if seta:# clicar na ao encontrar o botao de enviar
+                pyautogui.moveTo(seta)
+                pyautogui.click()
+                sleep(2)
+                break
+        except:
+            print(f"Não foi possivel enviar mensagem para {nome}")
+            with open ('erros.csv', 'a', newline='', encoding='utf-8') as arquivo:
+                arquivo.write(f'{nome},{telefone}\n')
+    
+    # nova pausa
+    sleep(1)
 
-        # salvanvo na variavel a localização do botao de enviar
-        seta = pyautogui.locateCenterOnScreen('seta.png')
-        
-        # Pausa apos achar a seta
-        sleep(10) 
-
-        # clicar na ao encontrar o botao de enviar
-        pyautogui.click(seta[0],seta[1])
-        
-        # nova pausa
-        sleep(5) 
-        
-        #fechar a aba
-        pyautogui.hotkey('ctrl','w')
-        
-        # nova pausa
-        sleep(5)
-
-    except:
-        print(f"Não foi possivel enviar mensagem para {nome}")
-        with open ('erros.csv', 'a', newline='', encoding='utf-8') as arquivo:
-            arquivo.write(f'{nome},{telefone}\n')
+    
