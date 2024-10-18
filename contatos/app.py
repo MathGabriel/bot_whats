@@ -54,9 +54,11 @@ for linha in pagina.iter_rows(min_row=2):
         try:
             # salvanvo na variavel a localização do botao de enviar
             seta = pyautogui.locateOnScreen('seta.png')
-            if seta:# clicar na ao encontrar o botao de enviar
+            if seta:
+                # clicar na ao encontrar o botao de enviar
                 pyautogui.moveTo(seta)
                 pyautogui.click()
+                #tempo para pos click a mensagem ser enviada
                 sleep(2)
                 break
         except:
@@ -64,7 +66,7 @@ for linha in pagina.iter_rows(min_row=2):
             with open ('erros.csv', 'a', newline='', encoding='utf-8') as arquivo:
                 arquivo.write(f'{nome},{telefone}\n')
     
-    # nova pausa
+    # nova pausa para desencargo de consciencia e num dar erro no codigo
     sleep(1)
 
     
